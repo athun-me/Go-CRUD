@@ -15,5 +15,7 @@ func init() {
 func main() {
 	r := gin.Default()
 	r.POST("/", controllers.CreatUser)
+	r.GET("/", controllers.ReadAllUser)
+	r.GET("/find/:id", controllers.ReadUser)
 	r.Run()
 }

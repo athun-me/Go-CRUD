@@ -7,7 +7,6 @@ import (
 )
 
 func CreatUser(c *gin.Context) {
-
 	var Data struct {
 		Name  string
 		Place string
@@ -34,10 +33,35 @@ func CreatUser(c *gin.Context) {
 	})
 }
 
-func ReadUser(c *gin.Context) {
+func ReadAllUser(c *gin.Context) {
 	var user []models.User
 	db := config.ConnectDB()
-	db.Find(&user)
+	result := db.Find(&user)
 
+	if result.Error != nil {
+		c.Status(400)
+		return
+	}
 
+	c.JSON(200, gin.H{
+		"user": user,
+	})
+}
+
+func ReadUser(c *gin.Context) {
+	//Get id from URL
+	id := c.Param("id")
+
+	var user []models.User
+	db := config.ConnectDB()
+	result := db.First(&user, id)
+
+	if result.Error != nil {
+		c.Status(400)
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"user": user,
+	})
 }
