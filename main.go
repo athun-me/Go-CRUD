@@ -17,5 +17,7 @@ func main() {
 	r.POST("/", controllers.CreatUser)
 	r.GET("/", controllers.ReadAllUser)
 	r.GET("/find/:id", controllers.ReadUser)
+	r.PUT("/update/:id", controllers.UpdateUser)
+	r.DELETE("/delete/:id", controllers.DeleteUser)
 	r.Run()
 }

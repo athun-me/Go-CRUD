@@ -65,3 +65,48 @@ func ReadUser(c *gin.Context) {
 		"user": user,
 	})
 }
+
+func UpdateUser(c *gin.Context) {
+	//get id from the URL
+	id := c.Param("id")
+
+	//Get the data of the requst body
+	var Data struct {
+		Name  string
+		Place string
+		Age   int64
+	}
+	c.Bind(&Data)
+
+	//Find the user where updating
+	var user models.User
+	db := config.ConnectDB()
+	db.First(&user, id)
+
+	//update id
+	db.Model(&user).Updates(models.User{
+		Name:  Data.Name,
+		Place: Data.Place,
+		Age:   Data.Age,
+	})
+
+	//Respond with it
+	c.JSON(200, gin.H{
+		"user": user,
+	})
+
+}
+
+func DeleteUser(c *gin.Context) {
+
+	// get id from URL
+	id := c.Param("id")
+
+	//Delete user
+	db := config.ConnectDB()
+	db.Delete(&models.User{}, id)
+
+	// responde
+	c.Status(200)
+
+}
